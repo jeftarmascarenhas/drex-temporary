@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.24;
+pragma solidity ^0.8.20;
 
 import "./ITPFt.sol";
 import "../TPFtAccessControl.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
-import "../../realdigital/AddressDiscovery.sol";
-import "../../realdigital/RealDigitalDefaultAccount.sol";
+import "../../AddressDiscovery.sol";
+import "../../RealDigitalDefaultAccount.sol";
 
 /**
  * @title TPFt

@@ -14,7 +14,7 @@ const config = {
     besu: {
       url: "http://localhost:8545",
       chainId: 1217,
-      accounts: [AUTHORITY_KEY, ADMIN_KEY],
+      // accounts: [AUTHORITY_KEY, ADMIN_KEY],
     },
   },
 };

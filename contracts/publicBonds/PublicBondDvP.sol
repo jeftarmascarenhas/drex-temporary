@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.24;
+pragma solidity ^0.8.20;
 
 import "./tpft/ITPFt.sol";
 import "./tpft/TPFt.sol";
 import {OpType, SWAP_ONE_STEP_FROM_NAME, TPFT_NAME, REAL_DIGITAL_NAME} from "./TPFtUtils.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "../realdigital/AddressDiscovery.sol";
-import "../realdigital/SwapOneStepFrom.sol";
+import "../AddressDiscovery.sol";
+import "../SwapOneStepFrom.sol";
 
 contract PublicBondDvP is ReentrancyGuard {
     using SafeERC20 for RealDigital;

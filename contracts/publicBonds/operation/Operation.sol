@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.24;
+pragma solidity ^0.8.20;
 
-import "../../realdigital/AddressDiscovery.sol";
+import "../../AddressDiscovery.sol";
 import {OpType, PUBLIC_BOND_NAME, OPERATION_ID_CONTRACT} from "../TPFtUtils.sol";
 import "../PublicBondDvP.sol";
 import "../tpft/ITPFt.sol";

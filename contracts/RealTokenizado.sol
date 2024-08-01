@@ -48,4 +48,12 @@ contract RealTokenizado is RealDigital {
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         reserve = newReserve;
     }
+
+    function setSpendAllowanceFrom(
+        address owner,
+        address spender,
+        uint256 value
+    ) external onlyRole(BURNER_ROLE) {
+        _spendAllowance(owner, spender, value);
+    }
 }

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity 0.8.24;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "./Operation.sol";
 import "../tpft/ITPFt.sol";
 import "../TPFtAccessControl.sol";
-import "../../realdigital/RealDigitalDefaultAccount.sol";
+import "../../RealDigitalDefaultAccount.sol";
 import {PUBLIC_BOND_NAME, REAL_DIGITAL_DEFAULT_ACCOUNT_NAME} from "../TPFtUtils.sol";
 
 /**
