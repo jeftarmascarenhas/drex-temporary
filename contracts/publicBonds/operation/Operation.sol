@@ -9,8 +9,6 @@ import "./OperationIdStorage.sol";
 
 contract Operation {
     AddressDiscovery public addressDiscovery;
-    PublicBondDvP public bondDvP =
-        PublicBondDvP(addressDiscovery.addressDiscovery(PUBLIC_BOND_NAME));
 
     mapping(uint256 => uint256) public dvpIds;
 
@@ -64,6 +62,8 @@ contract Operation {
 
     function executeOperationDvP(OperationBond memory publicBond) internal {
         OpType opType = getDvpOpType(publicBond.callerPart);
+
+        PublicBondDvP bondDvP = getBondDvP();
 
         uint256 financialValue = calcFinancialValue(
             publicBond.unitPerPrice,
@@ -160,5 +160,10 @@ contract Operation {
             OperationIdStorage(
                 addressDiscovery.addressDiscovery(OPERATION_ID_CONTRACT)
             );
+    }
+
+    function getBondDvP() internal view returns (PublicBondDvP) {
+        return
+            PublicBondDvP(addressDiscovery.addressDiscovery(PUBLIC_BOND_NAME));
     }
 }
