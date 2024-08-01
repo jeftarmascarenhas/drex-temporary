@@ -8,22 +8,10 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
 import "../../AddressDiscovery.sol";
 import "../../RealDigitalDefaultAccount.sol";
 
-/**
- * @title TPFt
- * @author BCB
- * @notice Contrato responsável pela criação e emissão de Título Público Federal tokenizado (TPFt).
- * @notice Este contrato utiliza informações públicas e está atualizado usando Openzeppelin V5
- * ATENÇÃO: Na Selic existe uma operação 1001 que é responsável por criação/emissão de título público federal.
- * Creio que o BACEN tenha um contrato para operação 1001, mas como não existe ABI deste contrato a criação/emissão
- * serão feitas no contrato de TPFt.
- * Numa atualização futura poderá para criar/emitir o fluxo será TPFtOperation1001 > TPFt
- */
 contract TPFt is ITPFt, ERC1155Supply, TPFtAccessControl, Pausable {
     string constant _name = "TPFt";
     uint256 public tpftIds;
-    /**
-     * @dev CNPJ8 da STN são os primeiros 8 digitos do CNPJ de uma empresa
-     */
+    // https://www.bcb.gov.br/content/estabilidadefinanceira/informesspi/InformeSPI-058-2020.pdf
     uint256 constant STN_CNPJ8 = 394460;
     AddressDiscovery public addressDiscovery;
 

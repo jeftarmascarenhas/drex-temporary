@@ -28,14 +28,6 @@ contract SwapOneStepFrom is Context {
         CBDC = _CBDC;
     }
 
-    /**
-     * Transfere o Real Tokenizado do cliente pagador para o recebedor.
-     * O cliente pagador é identificado pela carteira que estiver executando esta função.
-     * @param tokenSender O endereço do contrato de Real Tokenizado do participante pagador
-     * @param tokenReceiver O endereço do contrato de Real Tokenizado do participante recebedor
-     * @param receiver O endereço do cliente recebedor
-     * @param amount O valor a ser movimentad
-     */
     function executeSwap(
         RealTokenizado tokenSender,
         RealTokenizado tokenReceiver,

@@ -1,15 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.20;
 
-/**
- * @title ITPFt
- * @author BCB
- * @notice Interface responsável pela criação e emissão de Título Público Federal tokenizado (TPFt).
- */
 interface ITPFt {
-    /**
-     * @param tpftData Estrutura de dados do TPFt, que incluem as seguintes informações: <br />- `acronym`: A sigla do TPFt. <br />- `code`: O código único do TPFt. <br />- `maturityDate`: A data de vencimento do TPFt, representada como um valor numérico (timestamp Unix).
-     */
     struct TPFtData {
         string acronym;
         string code;
@@ -17,13 +9,9 @@ interface ITPFt {
     }
     event CreateTPFt(uint256 indexed tpftId, uint256 indexed maturityDate);
     event TFPtFronzenBalance(address from, uint256 balance);
-    /**
-     * Erro lançado porque a ação só pode ser realizada pelo contrato de colocação direta de TPFts.
-     */
+
     error OnlyMinterContract();
-    /**
-     * Erro lançado porque a ação só pode ser realizada pelo contrato de colocação direta de TPFts.
-     */
+
     error OnlyDirectPlacementContract();
     error OnlySTNaddress(address stnAddress);
     error TPFtDoesNotExits(uint256 tpftId);
