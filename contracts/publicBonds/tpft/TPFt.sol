@@ -24,7 +24,7 @@ contract TPFt is ITPFt, ERC1155Supply, TPFtAccessControl, Pausable {
     constructor(
         AddressDiscovery _addressDiscovery
     ) ERC1155("") TPFtAccessControl() {
-        _addressDiscovery = addressDiscovery;
+        addressDiscovery = _addressDiscovery;
     }
 
     modifier frozenBalanceAnalyzing(
@@ -64,23 +64,23 @@ contract TPFt is ITPFt, ERC1155Supply, TPFtAccessControl, Pausable {
     function createTPFt(
         TPFtData memory tpftData
     ) external whenNotPaused onlyRole(MINTER_ROLE) {
-        TPFtData storage newTPFt = tpfts[tpftIds];
-
-        tpftIds++;
-
         if (isTPFt(tpftData)) {
             revert TPFtExits(getTPFtId(tpftData));
         }
 
-        if (tpftData.maturityDate > block.timestamp) {
+        if (tpftData.maturityDate < block.timestamp) {
             revert TPFtMaturityDateExpirate();
         }
+
+        tpftIds++;
+
+        TPFtData storage newTPFt = tpfts[tpftIds];
 
         newTPFt.acronym = tpftData.acronym;
         newTPFt.code = tpftData.code;
         newTPFt.maturityDate = tpftData.maturityDate;
 
-        tpftMapToId[keccak256(abi.encode(newTPFt))] = tpftIds;
+        tpftMapToId[keccak256(abi.encode(tpftData))] = tpftIds;
         emit CreateTPFt(tpftIds, tpftData.maturityDate);
     }
 
@@ -96,14 +96,12 @@ contract TPFt is ITPFt, ERC1155Supply, TPFtAccessControl, Pausable {
         if (!isTPFt(tpftData)) {
             revert TPFtDoesNotExits(getTPFtId(tpftData));
         }
-
         if (
             receiverAddress !=
             getRealDigitalDefaultAccountContract().defaultAccount(STN_CNPJ8)
         ) {
             revert OnlySTNaddress(receiverAddress);
         }
-
         _mint(receiverAddress, getTPFtId(tpftData), tpftAmount, "");
     }
 
@@ -232,7 +230,7 @@ contract TPFt is ITPFt, ERC1155Supply, TPFtAccessControl, Pausable {
     }
 
     function getRealDigitalDefaultAccountContract()
-        internal
+        public
         view
         returns (RealDigitalDefaultAccount)
     {
