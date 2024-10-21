@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
-pragma solidity ^0.8.20;
+pragma solidity 0.8.24;
 
 import "../../AddressDiscovery.sol";
-import {OpType, PUBLIC_BOND_NAME, OPERATION_ID_CONTRACT} from "../TPFtUtils.sol";
+import {OpType, PUBLIC_BOND_NAME, TPFT_OPERATION_ID_CONTRACT} from "../TPFtUtils.sol";
 import "../PublicBondDvP.sol";
 import "../tpft/ITPFt.sol";
-import "./OperationIdStorage.sol";
+import "./TPFtOperationIdStorage.sol";
 
-contract Operation {
+abstract contract Operation {
     AddressDiscovery public addressDiscovery;
 
     mapping(uint256 => uint256) public dvpIds;
@@ -63,8 +63,6 @@ contract Operation {
     function executeOperationDvP(OperationBond memory publicBond) internal {
         OpType opType = getDvpOpType(publicBond.callerPart);
 
-        PublicBondDvP bondDvP = getBondDvP();
-
         uint256 financialValue = calcFinancialValue(
             publicBond.unitPerPrice,
             publicBond.tpftAmount
@@ -74,8 +72,10 @@ contract Operation {
             revert OperationIdUsed(publicBond.operationId);
         }
 
+        PublicBondDvP publicBondDvP = getBondDvP();
+
         if (!publicBond.hasToken) {
-            uint256 dvpId = bondDvP.dvpBetweenParticipant(
+            uint256 dvpId = publicBondDvP.dvpBetweenParticipant(
                 publicBond.operationId,
                 publicBond.receiver,
                 publicBond.sender,
@@ -104,7 +104,7 @@ contract Operation {
                 block.timestamp
             );
         } else {
-            uint256 dvpId = bondDvP.dvpBetweenClient(
+            uint256 dvpId = publicBondDvP.dvpBetweenClient(
                 publicBond.operationId,
                 publicBond.receiver,
                 publicBond.sender,
@@ -154,15 +154,15 @@ contract Operation {
     function getOperationIdStorage()
         internal
         view
-        returns (OperationIdStorage)
+        returns (TPFtOperationIdStorage)
     {
         return
-            OperationIdStorage(
-                addressDiscovery.addressDiscovery(OPERATION_ID_CONTRACT)
+            TPFtOperationIdStorage(
+                addressDiscovery.addressDiscovery(TPFT_OPERATION_ID_CONTRACT)
             );
     }
 
-    function getBondDvP() internal view returns (PublicBondDvP) {
+    function getBondDvP() public view returns (PublicBondDvP) {
         return
             PublicBondDvP(addressDiscovery.addressDiscovery(PUBLIC_BOND_NAME));
     }
