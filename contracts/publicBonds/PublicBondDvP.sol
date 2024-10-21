@@ -14,8 +14,8 @@ contract PublicBondDvP is ReentrancyGuard {
     using SafeERC20 for RealTokenizado;
 
     uint256 public dvpIds;
-    mapping(uint256 => DvpParticipantOp) dvpParticipantOps;
-    mapping(uint256 => DvpClientOp) dvpClientOps;
+    mapping(uint256 => DvpParticipantOp) public dvpParticipantOps;
+    mapping(uint256 => DvpClientOp) public dvpClientOps;
     AddressDiscovery public addressDiscovery;
 
     error TPFtNotMatchOp();
@@ -69,8 +69,8 @@ contract PublicBondDvP is ReentrancyGuard {
         DvpParticipantOp storage dvpOp = dvpParticipantOps[dvpId];
 
         validateOp(
-            dvpOp.sellerConfirmed,
             dvpOp.buyerConfirmed,
+            dvpOp.sellerConfirmed,
             dvpOp.canceled,
             opType
         );
@@ -111,7 +111,7 @@ contract PublicBondDvP is ReentrancyGuard {
         TPFt tpft = getTPFt();
 
         if (dvpOp.buyerConfirmed && dvpOp.sellerConfirmed) {
-            realDigital.safeTransferFrom(
+            realDigital.transferFrom(
                 dvpOp.buyer,
                 dvpOp.seller,
                 dvpOp.coinAmount
@@ -134,9 +134,15 @@ contract PublicBondDvP is ReentrancyGuard {
         bool canceled,
         OpType opType
     ) internal pure {
-        if (OpType.SELL == opType && sellerConfirmed) revert TPFtRepeatedOp();
-        if (OpType.BUY == opType && buyerConfirmed) revert TPFtRepeatedOp();
-        if (canceled) revert TPFtCanceledOp();
+        if (OpType.SELL == opType && sellerConfirmed) {
+            revert TPFtRepeatedOp();
+        }
+        if (OpType.BUY == opType && buyerConfirmed) {
+            revert TPFtRepeatedOp();
+        }
+        if (canceled) {
+            revert TPFtCanceledOp();
+        }
     }
 
     function checkParticipantOp(
@@ -221,7 +227,7 @@ contract PublicBondDvP is ReentrancyGuard {
 
         if (dvpOp.buyerConfirmed && dvpOp.sellerConfirmed) {
             if (dvpOp.tokenBuyer == dvpOp.tokenSeller) {
-                dvpOp.tokenBuyer.safeTransferFrom(
+                dvpOp.tokenBuyer.transferFrom(
                     dvpOp.buyer,
                     dvpOp.seller,
                     dvpOp.tokenAmount
